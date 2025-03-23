@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,25 +17,37 @@
       display: flex;
       justify-content: space-between;
     }
-    nav div {
-      font-size: 14px;
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 5px;
     }
-    .intro {
-      text-align: center;
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .section {
+      display: none;
       padding: 40px;
+      text-align: center;
     }
-    .intro img {
+    .active {
+      display: block !important;
+    }
+    img.avatar {
       width: 180px;
       border-radius: 50%;
     }
     .message-board {
       background-color: #555;
       padding: 20px;
+      max-width: 600px;
+      margin: auto;
     }
     .input-group {
       display: flex;
       gap: 10px;
       margin-bottom: 10px;
+      justify-content: center;
     }
     input {
       padding: 5px;
@@ -50,7 +62,10 @@
 <body>
   <nav>
     <div>
-      網路攻防實習 &nbsp;|&nbsp; About &nbsp;|&nbsp; Chat &nbsp;|&nbsp; 參觀人數 <span id="visitor-count">0</span>
+      網路攻防實習 |
+      <a href="#" onclick="showSection('about')">About</a> |
+      <a href="#" onclick="showSection('chat')">Chat</a> |
+      參觀人數 <span id="visitor-count">0</span>
     </div>
     <div>
       <button>Login</button>
@@ -58,8 +73,9 @@
     </div>
   </nav>
 
-  <div class="intro">
-    <img src="photo.jpg" alt="My photo" style="width: 180px; border-radius: 50%;" />
+  <!-- About 區塊 -->
+  <div id="about" class="section active">
+    <img src="photo.jpg" alt="My photo" class="avatar" />
     <h2>Welcome!</h2>
     <p>
       嗨!我是台大的學生，目前就讀電機資安所<br />
@@ -68,25 +84,34 @@
     </p>
   </div>
 
-  <div class="message-board">
-    <h3>留言板</h3>
-    <div class="input-group">
-      <input type="text" id="name" placeholder="Your name" />
-      <input type="text" id="message" placeholder="Your message" />
-      <button onclick="sendMessage()">Send</button>
+  <!-- Chat 區塊 -->
+  <div id="chat" class="section">
+    <h2>留言板</h2>
+    <div class="message-board">
+      <div class="input-group">
+        <input type="text" id="name" placeholder="Your name" />
+        <input type="text" id="message" placeholder="Your message" />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+      <div id="message-list"></div>
     </div>
-    <div id="message-list"></div>
   </div>
 
   <script>
-    // Visitor counter
+    // 訪客計數器
     const visitorCountEl = document.getElementById("visitor-count");
-    let count = sessionStorage.getItem("visitorCount") || 0;
+    let count = sessionStorage.getItem("visitorCount") || -1;
     count++;
     sessionStorage.setItem("visitorCount", count);
     visitorCountEl.textContent = count;
 
-    // Message board
+    // 顯示切換區塊
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach((sec) => sec.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // 留言功能
     const messageList = document.getElementById("message-list");
 
     function sendMessage() {
