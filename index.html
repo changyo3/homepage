@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Personal Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #333;
+      color: white;
+    }
+    nav {
+      background-color: #222;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    nav div {
+      font-size: 14px;
+    }
+    .intro {
+      text-align: center;
+      padding: 40px;
+    }
+    .intro img {
+      width: 180px;
+      border-radius: 50%;
+    }
+    .message-board {
+      background-color: #555;
+      padding: 20px;
+    }
+    .input-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 5px;
+    }
+    .msg {
+      background-color: #1fa4c1;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div>
+      網頁攻防實習 &nbsp;|&nbsp; About &nbsp;|&nbsp; Chat &nbsp;|&nbsp; 參觀人數 <span id="visitor-count">0</span>
+    </div>
+    <div>
+      <button>Login</button>
+      <button>Sign Up</button>
+    </div>
+  </nav>
+
+  <div class="intro">
+    <img src="https://upload.wikimedia.org/wikipedia/zh/7/7c/Doraemon_character.png" alt="avatar" />
+    <h2>Welcome!</h2>
+    <p>
+      這是我的小作品網頁，目前還沒串後端資料庫。<br />
+      您可以在下方留言。<br />
+      點 F5 會刷新並清除所有留言與計數。
+    </p>
+  </div>
+
+  <div class="message-board">
+    <h3>留言板</h3>
+    <div class="input-group">
+      <input type="text" id="name" placeholder="Your name" />
+      <input type="text" id="message" placeholder="Your message" />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+    <div id="message-list"></div>
+  </div>
+
+  <script>
+    // Visitor counter
+    const visitorCountEl = document.getElementById("visitor-count");
+    let count = sessionStorage.getItem("visitorCount") || 0;
+    count++;
+    sessionStorage.setItem("visitorCount", count);
+    visitorCountEl.textContent = count;
+
+    // Message board
+    const messageList = document.getElementById("message-list");
+
+    function sendMessage() {
+      const name = document.getElementById("name").value.trim();
+      const message = document.getElementById("message").value.trim();
+
+      if (name && message) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = "msg";
+        msgDiv.innerHTML = `<strong>${name}</strong>: ${message}`;
+        messageList.appendChild(msgDiv);
+
+        document.getElementById("name").value = "";
+        document.getElementById("message").value = "";
+      }
+    }
+  </script>
+</body>
+</html>
